@@ -38,7 +38,6 @@ void setup() {
 void loop() {
 
   BLEDevice central = BLE.central(); // wait for a BLE central
-
   if (central) {  // if a central is connected to the peripheral
     Serial.print("Connected to central: ");
     
@@ -65,8 +64,12 @@ void loop() {
         Serial.println(" cm");
 
         delay(10);
-        readChar.writeValue(distanceCm);
-        Serial.println("Distance printed to peripheral");
+        if (writeChar.written()) {
+          if (writeChar.value()) {
+            readChar.writeValue(distanceCm);
+            Serial.println("Distance printed to peripheral");
+          }
+        }
       }
     }
 
